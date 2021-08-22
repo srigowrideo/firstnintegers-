@@ -1,0 +1,43 @@
+DATA SEGMENT
+MES     DB 10,13,'Enter count of total numbers N =$'
+MES     DB 10,13,'Enter next number :$'
+SUM     DW  0 
+DATA ENDS 
+CODE SEGMENT
+ASSUME CS:CODE,DS:DATA 
+START: MOV AX, DATA;
+       MOV DS,AX;
+       MOV AH,09H ;
+       LEA DX,MES
+       INT 21H
+      MOV AH,01;
+      INT 21H 
+    SUB AL,30H 
+     MOV BL,AL ; 
+     CALL ADDF ;
+     MOV AH,4CH ; 
+    INT 21H ; 
+     CMP BL,0;
+     JNZ SKIP; 
+     JMP LAST1; 
+SKIP :  DEC BL ; 
+       CALL ADDF ; 
+       MOV AH,09H ;
+        LEA DX,MES1 
+       INT 21H 
+       MOV CL,04;
+       MOV AH, 01
+      INT 21H 
+      SUB AL,30H 
+      ROL AL,CL 
+      MOV BH,AL 
+      MOV AH,01
+      INT 21H
+      SUB AL,30H 
+      ADD AL,BH 
+      MOV AH , 00
+      ADD SUM,AX;
+LAST: RET
+      ENDP 
+CODE ENDS 
+END START
